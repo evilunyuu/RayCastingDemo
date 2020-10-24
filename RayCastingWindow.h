@@ -19,6 +19,8 @@ class RayCastingWindow: public Window
 protected:
 	std::shared_ptr<Map> _map;
 	std::shared_ptr<Player> _player;
+
+	void draw_col(int col, int h);
 public:
 	RayCastingWindow(
 			int width = DEFAULT_WIDTH,

@@ -16,10 +16,29 @@ RayCastingWindow::RayCastingWindow(int width, int height)
 
 void RayCastingWindow::render()
 {
+	SDL_Rect r_sky { 0, 0, width(), height() / 2 };
+	SDL_Rect r_floor { 0, height() / 2, width(), height() / 2 };
 	SDL_SetRenderDrawColor(_renderer.get(), 64, 128, 192, 255);
-	SDL_RenderClear(_renderer.get());
+	SDL_RenderFillRect(_renderer.get(), &r_sky);
+	SDL_SetRenderDrawColor(_renderer.get(), 0, 128, 0, 255);
+	SDL_RenderFillRect(_renderer.get(), &r_floor);
 
-	SDL_SetRenderDrawColor(_renderer.get(), 255, 255, 255, 255);
+	SDL_SetRenderDrawBlendMode(_renderer.get(), SDL_BLENDMODE_BLEND);
+
+	// Рисование стен (с использованием алгоритма бросания лучей)
+
+	for (int col = 0; col < width(); ++col) {
+
+		// Здесь будет алгоритм
+
+
+
+		draw_col(col, 300); // тут надо будет поменять 300 на h
+	}
+
+	// Рисование карты
+
+	SDL_SetRenderDrawColor(_renderer.get(), 255, 255, 255, 64);
 	for (int y = 0; y < _map->height(); ++y)
 		for (int x = 0; x < _map->width(); ++x) {
 			SDL_Rect r { x * 100, y * 100, 100, 100 };
@@ -42,6 +61,15 @@ void RayCastingWindow::render()
 	SDL_RenderFillRect(_renderer.get(), &r_player);
 	SDL_SetRenderDrawColor(_renderer.get(), 255, 255, 0, 255);
 	SDL_RenderFillRect(_renderer.get(), &r_player_eye);
+}
+
+void RayCastingWindow::draw_col(int col, int h)
+{
+	SDL_SetRenderDrawColor(_renderer.get(), 64, 64, 64, 255);
+	int y1 = height() / 2 - h / 2;
+	int y2 = height() / 2 + h / 2;
+	SDL_RenderDrawLine(_renderer.get(), col, y1, col, y2);
+
 }
 
 void RayCastingWindow::handle_keys(const Uint8 *keys)
